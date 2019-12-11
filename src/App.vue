@@ -1,17 +1,34 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div id="app" @contextmenu.prevent>
+    <Welcome v-show="!started" @GameStarted="gameStarted" />
+    <Game v-if="started" :level="level" @RetryAgainEvent="retryAgain"></Game>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Welcome from "./components/Welcome.vue";
+import Game from "./components/Game";
 
 export default {
   name: "app",
   components: {
-    HelloWorld
+    Welcome,
+    Game
+  },
+  data() {
+    return {
+      started: false,
+      level: null
+    };
+  },
+  methods: {
+    gameStarted(level) {
+      this.level = level;
+      this.started = true;
+    },
+    retryAgain() {
+      this.started = false;
+    }
   }
 };
 </script>
